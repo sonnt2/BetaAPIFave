@@ -40,19 +40,18 @@
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
 
             for (NSDictionary *itemDict in [responseObject objectForKey:@"faces"]) {
-                
-//                for (NSDictionary *itemChild in [itemDict objectForKey:@"attributes"]) {
-//                    APIFaceAnalystEntity *faceAnalyst = [[APIFaceAnalystEntity alloc] init];
-//                    [faceAnalyst setAge:[[itemChild objectForKey:@"value"] stringValue]];
-//                    [faceAnalyst setFaceQuality:[[[itemChild objectForKey:@"facequality"] objectForKey:@"value"] stringValue]];
-//                    [faceAnalyst setFaceQuality:[[[itemChild objectForKey:@"gender"] objectForKey:@"value"] stringValue]];
-//                     [_results addObject:faceAnalyst];
-//                }
+                APIFaceAnalystEntity *faceAnalyst = [[APIFaceAnalystEntity alloc] init];
+                NSLog(@"age: %@", [[[itemDict objectForKey:@"attributes"] objectForKey:@"age"] objectForKey:@"value"]);
+                [faceAnalyst setAge:[[[[itemDict objectForKey:@"attributes"] objectForKey:@"age"] objectForKey:@"value"] stringValue]];
+                [faceAnalyst setFaceQuality:[[[[itemDict objectForKey:@"attributes"] objectForKey:@"facequality"] objectForKey:@"value"] stringValue]];
+                [faceAnalyst setGender:[[[itemDict objectForKey:@"attributes"] objectForKey:@"gender"] objectForKey:@"value"]];
+                    [_results addObject:faceAnalyst];
             }
         }
-
+        completeTask(_results);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Error: %@", error);
+        errorTask(error);
     }];
 }
 

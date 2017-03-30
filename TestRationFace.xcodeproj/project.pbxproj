@@ -19,6 +19,7 @@
 		175AC3301E8B912B0088D6C9 /* TestAPIFaceFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 175AC32F1E8B912B0088D6C9 /* TestAPIFaceFetcher.m */; };
 		6570A7BD9084DA39301E9215 /* libPods-TestRationFace.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 856521B4585A61A37E8F9A17 /* libPods-TestRationFace.a */; };
 		6857F2A61E8BD72600A88CB3 /* APIFaceAnalystEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857F2A51E8BD72600A88CB3 /* APIFaceAnalystEntity.m */; };
+		6857F2A81E8BF9B200A88CB3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6857F2A71E8BF9B200A88CB3 /* MobileCoreServices.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		4C679BB6B40EF2170A5A6A41 /* Pods-TestRationFace.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestRationFace.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestRationFace/Pods-TestRationFace.debug.xcconfig"; sourceTree = "<group>"; };
 		6857F2A41E8BD72600A88CB3 /* APIFaceAnalystEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIFaceAnalystEntity.h; sourceTree = "<group>"; };
 		6857F2A51E8BD72600A88CB3 /* APIFaceAnalystEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIFaceAnalystEntity.m; sourceTree = "<group>"; };
+		6857F2A71E8BF9B200A88CB3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		856521B4585A61A37E8F9A17 /* libPods-TestRationFace.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestRationFace.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B81E44C784D0FADE3CEA27C7 /* Pods-TestRationFace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestRationFace.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestRationFace/Pods-TestRationFace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6857F2A81E8BF9B200A88CB3 /* MobileCoreServices.framework in Frameworks */,
 				6570A7BD9084DA39301E9215 /* libPods-TestRationFace.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,6 +212,7 @@
 		C88AB0D6E10B2A2FCF89A0A1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6857F2A71E8BF9B200A88CB3 /* MobileCoreServices.framework */,
 				856521B4585A61A37E8F9A17 /* libPods-TestRationFace.a */,
 			);
 			name = Frameworks;
