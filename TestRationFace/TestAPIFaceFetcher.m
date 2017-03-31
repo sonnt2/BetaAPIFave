@@ -27,9 +27,16 @@
     NSString *strSecret = @"y4u40Tfk8mCp5lqiQQ3j_481y6brxo4j";
     NSString *urlDetect = @"https://api-us.faceplusplus.com/facepp/v3/detect";
     NSDictionary *parameters = @{@"api_key": strkey, @"api_secret":strSecret, @"return_landmark":@"1", @"return_attributes":@"gender,age,facequality"};
+    
+    //Init AFHTTPSessionManager to action with API
     AFHTTPSessionManager *sessionManager = [self httpSessionManager];
+    
+    //Call back method post from app to api
     [sessionManager POST:urlDetect parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        //Is image file
         if (image_file) {
+            
+            //Upload file and add to form data
             [formData appendPartWithFileData:UIImageJPEGRepresentation(image_file, 1.0)
                                         name:@"image_file"
                                     fileName:@"image.jpg"
@@ -46,6 +53,13 @@
                 [faceAnalyst setFaceQuality:[[[[itemDict objectForKey:@"attributes"] objectForKey:@"facequality"] objectForKey:@"value"] stringValue]];
                 [faceAnalyst setGender:[[[itemDict objectForKey:@"attributes"] objectForKey:@"gender"] objectForKey:@"value"]];
                     [_results addObject:faceAnalyst];
+                
+                //Get properties landmark
+                NSDictionary *itemLandmark = [itemDict objectForKey:@"landmark"];
+                
+                //Get x and y of right_eye_center
+                [faceAnalyst setRightEyeCenterX:[[[itemLandmark objectForKey:@"right_eye_center"] objectForKey:@"x"] integerValue]];
+                [faceAnalyst setRightEyeCenterY:[[[itemLandmark objectForKey:@"right_eye_center"] objectForKey:@"y"] integerValue]];
             }
         }
         completeTask(_results);
