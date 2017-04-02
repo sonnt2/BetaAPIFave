@@ -10,6 +10,7 @@
 #import "TestAPIFaceFetcher.h"
 #import "MBProgressHUD.h"
 #import "APIFaceAnalystEntity.h"
+#import "TestFunction.h"
 
 @interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
@@ -75,7 +76,7 @@
     NSString *mediaType = [info valueForKey:UIImagePickerControllerMediaType];
 
     if([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
-        UIImage *photoTaken = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        UIImage *photoTaken = [info objectForKey:@"UIImagePickerControllerEditedImage"];
         
         //Save Photo to library only if it wasnt already saved i.e. its just been taken
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
@@ -92,6 +93,7 @@
                 [self.txtAge setText:[NSString stringWithFormat:@"Age:%@",entity.age]];
                 [self.txtSex setText:[NSString stringWithFormat:@"Sex:%@",entity.gender]];
                 [self.txtPoint setText:[NSString stringWithFormat:@"%@/100",entity.faceQuality]];
+                [self calculatorPointWithEntity:entity];
             }
             [hud hide:YES];
         } error:^(NSError *error) {
@@ -128,5 +130,31 @@
     
 }
 
-- (void)
+- (void)calculatorPointWithEntity:(APIFaceAnalystEntity*)faceAnalyst {
+    //calc width/height of eye is 0.5
+    double pointLeftEye = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeTopY andPos:faceAnalyst.leftEyeBottomY andPos:faceAnalyst.leftEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andConstant:2.5];
+    NSLog(@"diem mat trai: %.2f", pointLeftEye);
+    
+    double pointRighEye = [TestFunction convertPointWithPosition:faceAnalyst.rightEyeTopY andPos:faceAnalyst.rightEyeBottomY andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.rightEyeRightCornerX andConstant:2.5];
+    NSLog(@"diem mat phai: %.2f", pointRighEye);
+    
+    //Calc width of eye/ width of face
+    double pointWidthEyeAndWidthFace = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeLeftCornerX andPos:faceAnalyst.rightEyeRightCornerX andPos:faceAnalyst.faceRectangleWidth andPos:0.0 andConstant:2.0];
+    NSLog(@"diem cua mat:%.2f", pointWidthEyeAndWidthFace);
+    
+    //Calc width of left eye =  width of left and right eyes
+    double pointWidthLeftEyeAndWidthLeftAndRightEye = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andConstant:1.0];
+    NSLog(@"diem cua mat:%.2f", pointWidthLeftEyeAndWidthLeftAndRightEye);
+    
+    //Calc width of Rigth eye =  width of left and right eyes
+    double pointWidthRightEyeAndWidthLeftAndRightEye = [TestFunction convertPointWithPosition:faceAnalyst.rightEyeRightCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andConstant:2.0];
+    NSLog(@"diem cua mat:%.2f", pointWidthRightEyeAndWidthLeftAndRightEye);
+    
+    //Calc width
+    double pointHeightNoseAndHeightFace = [TestFunction convertPointWithPosition:faceAnalyst.noseContourLeft1Y andPos:faceAnalyst.noseContourLowerMiddleY andPos:faceAnalyst.faceRectangleHeight andPos:0.0 andConstant:2.5];
+    NSLog(@"diem cua mui :%.2f", pointHeightNoseAndHeightFace);
+    
+    
+
+}
 @end

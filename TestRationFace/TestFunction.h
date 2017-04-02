@@ -12,5 +12,5 @@
 @interface TestFunction : NSObject
 
 + (double)convertPhilNumberWithPositon:(double)posOne andPos:(double)posTwo andPos:(double)posThree;
-
++ (double)convertPointWithPosition:(double)posOne andPos:(double)posTwo andPos:(double)posThree andPos:(double)posFour andConstant:(double) numConstant;
 @end

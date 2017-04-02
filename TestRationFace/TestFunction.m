@@ -22,4 +22,18 @@ static const double numPhil = 1.618;
 
     return result;
 }
+
++ (double)convertPointWithPosition:(double)posOne andPos:(double)posTwo andPos:(double)posThree andPos:(double)posFour andConstant:(double) numConstant {
+    
+    double result;
+    result = fabs(posOne - posTwo) / fabs(posThree - posFour);
+    if (result > 1) {
+        result = fabs(result - numConstant);
+        result = 10.0 - (result * 10) / numConstant;
+    } else {
+        result = fabs(result - 1 / numConstant);
+        result = 10.0 - (result * 10) / (1/numConstant);
+    }
+    return result;
+}
 @end
