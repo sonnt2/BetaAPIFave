@@ -17,6 +17,7 @@
 		175AC32A1E8B89B00088D6C9 /* masterData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 175AC3291E8B89B00088D6C9 /* masterData.plist */; };
 		175AC32D1E8B8B7D0088D6C9 /* TestFetcherBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 175AC32C1E8B8B7D0088D6C9 /* TestFetcherBase.m */; };
 		175AC3301E8B912B0088D6C9 /* TestAPIFaceFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 175AC32F1E8B912B0088D6C9 /* TestAPIFaceFetcher.m */; };
+		17D808231E8DF98C00798453 /* TestFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D808221E8DF98C00798453 /* TestFunction.m */; };
 		6570A7BD9084DA39301E9215 /* libPods-TestRationFace.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 856521B4585A61A37E8F9A17 /* libPods-TestRationFace.a */; };
 		6857F2A61E8BD72600A88CB3 /* APIFaceAnalystEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6857F2A51E8BD72600A88CB3 /* APIFaceAnalystEntity.m */; };
 		6857F2A81E8BF9B200A88CB3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6857F2A71E8BF9B200A88CB3 /* MobileCoreServices.framework */; };
@@ -40,6 +41,8 @@
 		175AC32C1E8B8B7D0088D6C9 /* TestFetcherBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestFetcherBase.m; sourceTree = "<group>"; };
 		175AC32E1E8B912B0088D6C9 /* TestAPIFaceFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAPIFaceFetcher.h; sourceTree = "<group>"; };
 		175AC32F1E8B912B0088D6C9 /* TestAPIFaceFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestAPIFaceFetcher.m; sourceTree = "<group>"; };
+		17D808211E8DF98C00798453 /* TestFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFunction.h; sourceTree = "<group>"; };
+		17D808221E8DF98C00798453 /* TestFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestFunction.m; sourceTree = "<group>"; };
 		4C679BB6B40EF2170A5A6A41 /* Pods-TestRationFace.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestRationFace.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestRationFace/Pods-TestRationFace.debug.xcconfig"; sourceTree = "<group>"; };
 		6857F2A41E8BD72600A88CB3 /* APIFaceAnalystEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIFaceAnalystEntity.h; sourceTree = "<group>"; };
 		6857F2A51E8BD72600A88CB3 /* APIFaceAnalystEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIFaceAnalystEntity.m; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				175AC3231E8B86220088D6C9 /* PropertiesList */,
+				17D808211E8DF98C00798453 /* TestFunction.h */,
+				17D808221E8DF98C00798453 /* TestFunction.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				175AC3261E8B869F0088D6C9 /* TestPropertiesUtility.m in Sources */,
 				6857F2A61E8BD72600A88CB3 /* APIFaceAnalystEntity.m in Sources */,
 				175AC32D1E8B8B7D0088D6C9 /* TestFetcherBase.m in Sources */,
+				17D808231E8DF98C00798453 /* TestFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,7 +479,7 @@
 				INFOPLIST_FILE = TestRationFace/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.devMoney.beta.TestRationFace;
+				PRODUCT_BUNDLE_IDENTIFIER = com.devMoney.beta1.TestRationFace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -487,7 +493,7 @@
 				INFOPLIST_FILE = TestRationFace/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.devMoney.beta.TestRationFace;
+				PRODUCT_BUNDLE_IDENTIFIER = com.devMoney.beta1.TestRationFace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

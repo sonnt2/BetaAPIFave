@@ -6,6 +6,7 @@ target 'TestRationFace' do
   # use_frameworks!
    pod 'MBProgressHUD', '~> 0.9.0'
    pod 'AFNetworking'
+   pod 'TGCameraViewController'
 
   # Pods for TestRationFace
 
