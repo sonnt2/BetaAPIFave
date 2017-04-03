@@ -11,6 +11,7 @@
 #import "MBProgressHUD.h"
 #import "APIFaceAnalystEntity.h"
 #import "TestFunction.h"
+#import "TGCameraViewController.h"
 
 @interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
@@ -24,6 +25,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //    126
+    //    176
+    //    422
+    //
+    [TestFunction convertPhilNumberWithPositon:287.0 andPos:326.0 andPos:351.0];
+    
+    
+    // set custom tint color
+    [TGCameraColor setTintColor: [UIColor greenColor]];
+    
+    // save image to album
+    [TGCamera setOption:kTGCameraOptionSaveImageToAlbum value:@YES];
+    
+    // use the original image aspect instead of square
+    
     // Do any additional setup after loading the view, typically from a nib.
     if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         UIAlertController *myAlertView = [UIAlertController alertControllerWithTitle:@"Error" message:@"Device has no camera" preferredStyle:UIAlertControllerStyleAlert];
@@ -37,10 +54,9 @@
                                  
                              }];
         [myAlertView addAction:ok];
-
+        
     }
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -48,20 +64,15 @@
 }
 - (IBAction)tapCaptureImage:(id)sender {
     [self resetLabelInfo];
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing =YES;
-    imagePicker.sourceType =UIImagePickerControllerSourceTypeCamera;
-    [self presentViewController:imagePicker animated:NO completion:nil];
+    TGCameraNavigationController *navigationController = [TGCameraNavigationController newWithCameraDelegate:self];
+    
+    [self presentViewController:navigationController animated:NO completion:nil];
 }
 
 - (IBAction)tapGetPhotos:(id)sender {
     [self resetLabelInfo];
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-     [self presentViewController:picker animated:NO completion:nil];
+    UIImagePickerController *picker = [TGAlbum imagePickerControllerWithDelegate:self];
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 - (void) resetLabelInfo{
@@ -69,7 +80,6 @@
     [self.txtSex setText:@""];
     [self.txtPoint setText:@""];
 }
-
 
 //  #UIImagePickerControllerDelegate
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
@@ -156,5 +166,87 @@
     
     
 
+}
+
+#pragma mark - TGCameraDelegate required
+
+- (void)cameraDidCancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)cameraDidTakePhoto:(UIImage *)image
+{
+    _imageView.image = image;
+    
+    TestAPIFaceFetcher *testApi = [[TestAPIFaceFetcher alloc]init];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeAnnularDeterminate;
+    hud.labelText = @"Caculating";
+    
+    [testApi beginFetcherWithKey:nil secret:nil imageFile:image complete:^(NSArray *results) {
+        NSLog(@"ket qua%@",results);
+        for (APIFaceAnalystEntity *entity in results) {
+            [self.txtAge setText:[NSString stringWithFormat:@"Age:%@",entity.age]];
+            [self.txtSex setText:[NSString stringWithFormat:@"Sex:%@",entity.gender]];
+            double point = [TestFunction convertPhilNumberWithPositon:entity.rightEyeCenterY andPos:entity.noseContourLeft2Y andPos:entity.noseContourLowerMiddleY];
+            [self.txtPoint setText:[NSString stringWithFormat:@"%0.f/10",point]];
+            NSLog(@"diem so%f",point);
+            //            CGRect *rec = CGRectMake(entity.rightEyeCenterX,entity.rightEyeCenterY, entity.width, aSize.height);
+            //            [self drawRect:rec];
+        }
+        [hud hide:YES];
+    } error:^(NSError *error) {
+        //
+    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)cameraDidSelectAlbumPhoto:(UIImage *)image
+{
+    _imageView.image = image;
+    //    TestAPIFaceFetcher *testApi = [[TestAPIFaceFetcher alloc]init];
+    //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    //    hud.mode = MBProgressHUDModeAnnularDeterminate;
+    //    hud.labelText = @"Caculating";
+    //    [testApi beginFetcherWithKey:nil secret:nil imageFile:image complete:^(NSArray *results) {
+    //        NSLog(@"ket qua%@",results);
+    //        for (APIFaceAnalystEntity *entity in results) {
+    //            [self.txtAge setText:[NSString stringWithFormat:@"Age:%@",entity.age]];
+    //            [self.txtSex setText:[NSString stringWithFormat:@"Sex:%@",entity.gender]];
+    //            double point = [TestFunction convertPhilNumberWithPositon:entity.rightEyeCenterY andPos:entity.noseContourLeft2Y andPos:entity.noseContourLowerMddleY];
+    //            [self.txtPoint setText:[NSString stringWithFormat:@"%0.f/10",point]];
+    //            NSLog(@"diem so%f",point);
+    //        }
+    //        [hud hide:YES];
+    //    } error:^(NSError *error) {
+    //        //
+    //    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Actions
+
+
+#pragma mark -
+#pragma mark - Private methods
+
+- (void)clearTapped
+{
+    _imageView.image = nil;
+}
+
+- (void)drawRect:(CGRect)rect {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10.0, 10.0)];
+    [path addLineToPoint:CGPointMake(100.0, 100.0)];
+    path.lineWidth = 3;
+    [[UIColor blueColor] setStroke];
+    [path stroke];
+}
+-(void)drawLine {
+    UIView *myBox  = [[UIView alloc] initWithFrame:CGRectMake(180, 35, 10, 10)];
+    myBox.backgroundColor = [UIColor lightGrayColor];
+    [self.view addSubview:myBox];
 }
 @end
