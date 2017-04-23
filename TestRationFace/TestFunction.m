@@ -23,6 +23,16 @@ static const double numPhil = 1.618;
     return result;
 }
 
++ (double)convert2:(double)posOne andPos:(double)posTwo {
+    double result;
+    result = (posOne / posTwo);
+    //Calculator number phil
+    result = fabs(result - 1);
+    result = 10.0 - (result * 10)/1;
+    
+    return result;
+}
+
 + (double)convertPointWithPosition:(double)posOne andPos:(double)posTwo andPos:(double)posThree andPos:(double)posFour andConstant:(double) numConstant {
     
     double result;

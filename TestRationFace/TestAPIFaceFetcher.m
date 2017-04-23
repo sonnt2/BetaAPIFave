@@ -190,8 +190,8 @@
     [faceAnalyst setNoseLeftX:[[[itemLandmark objectForKey:@"nose_left"] objectForKey:@"x"] integerValue]];
     [faceAnalyst setNoseLeftY:[[[itemLandmark objectForKey:@"nose_left"] objectForKey:@"y"] integerValue]];
     //nose Right
-    [faceAnalyst setNoseRightX:[[[itemLandmark objectForKey:@"nose_Right"] objectForKey:@"x"] integerValue]];
-    [faceAnalyst setNoseRightX:[[[itemLandmark objectForKey:@"nose_Right"] objectForKey:@"y"] integerValue]];
+    [faceAnalyst setNoseRightX:[[[itemLandmark objectForKey:@"nose_right"] objectForKey:@"x"] integerValue]];
+    [faceAnalyst setNoseRightY:[[[itemLandmark objectForKey:@"nose_right"] objectForKey:@"y"] integerValue]];
 }
 
 /*!
@@ -243,11 +243,11 @@
     
     //contour Left
     [faceAnalyst setContourLeft1X:[[[itemLandmark objectForKey:@"contour_left1"] objectForKey:@"x"] integerValue]];
-    [faceAnalyst setContourLeft1X:[[[itemLandmark objectForKey:@"contour_left1"] objectForKey:@"y"] integerValue]];
+    [faceAnalyst setContourLeft1Y:[[[itemLandmark objectForKey:@"contour_left1"] objectForKey:@"y"] integerValue]];
     
     //contour chin
     [faceAnalyst setContourChinX:[[[itemLandmark objectForKey:@"contour_chin"] objectForKey:@"x"] integerValue]];
-    [faceAnalyst setContourChinX:[[[itemLandmark objectForKey:@"contour_chin"] objectForKey:@"y"] integerValue]];
+    [faceAnalyst setContourChinY:[[[itemLandmark objectForKey:@"contour_chin"] objectForKey:@"y"] integerValue]];
 
 }
 

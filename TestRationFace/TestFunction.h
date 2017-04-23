@@ -13,4 +13,5 @@
 
 + (double)convertPhilNumberWithPositon:(double)posOne andPos:(double)posTwo andPos:(double)posThree;
 + (double)convertPointWithPosition:(double)posOne andPos:(double)posTwo andPos:(double)posThree andPos:(double)posFour andConstant:(double) numConstant;
++ (double)convert2:(double)posOne andPos:(double)posTwo;
 @end

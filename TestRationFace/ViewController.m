@@ -66,7 +66,7 @@
     [self resetLabelInfo];
     TGCameraNavigationController *navigationController = [TGCameraNavigationController newWithCameraDelegate:self];
     
-    [self presentViewController:navigationController animated:NO completion:nil];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (IBAction)tapGetPhotos:(id)sender {
@@ -102,8 +102,7 @@
             for (APIFaceAnalystEntity *entity in results) {
                 [self.txtAge setText:[NSString stringWithFormat:@"Age:%@",entity.age]];
                 [self.txtSex setText:[NSString stringWithFormat:@"Sex:%@",entity.gender]];
-                [self.txtPoint setText:[NSString stringWithFormat:@"%@/100",entity.faceQuality]];
-                [self calculatorPointWithEntity:entity];
+                [self.txtPoint setText:[NSString stringWithFormat:@"%.2f/10",[self calculatorPointWithEntity:entity]]];
             }
             [hud hide:YES];
         } error:^(NSError *error) {
@@ -140,7 +139,7 @@
     
 }
 
-- (void)calculatorPointWithEntity:(APIFaceAnalystEntity*)faceAnalyst {
+- (double)calculatorPointWithEntity:(APIFaceAnalystEntity*)faceAnalyst {
     //calc width/height of eye is 0.5
     double pointLeftEye = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeTopY andPos:faceAnalyst.leftEyeBottomY andPos:faceAnalyst.leftEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andConstant:2.5];
     NSLog(@"diem mat trai: %.2f", pointLeftEye);
@@ -157,15 +156,58 @@
     NSLog(@"diem cua mat:%.2f", pointWidthLeftEyeAndWidthLeftAndRightEye);
     
     //Calc width of Rigth eye =  width of left and right eyes
-    double pointWidthRightEyeAndWidthLeftAndRightEye = [TestFunction convertPointWithPosition:faceAnalyst.rightEyeRightCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andConstant:2.0];
+    double pointWidthRightEyeAndWidthLeftAndRightEye = [TestFunction convertPointWithPosition:faceAnalyst.rightEyeRightCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andConstant:1.0];
     NSLog(@"diem cua mat:%.2f", pointWidthRightEyeAndWidthLeftAndRightEye);
+    
+    //-------------------------
+    double point = [TestFunction convert2:pointWidthLeftEyeAndWidthLeftAndRightEye andPos:pointWidthRightEyeAndWidthLeftAndRightEye];
+    
     
     //Calc width
     double pointHeightNoseAndHeightFace = [TestFunction convertPointWithPosition:faceAnalyst.noseContourLeft1Y andPos:faceAnalyst.noseContourLowerMiddleY andPos:faceAnalyst.faceRectangleHeight andPos:0.0 andConstant:2.5];
     NSLog(@"diem cua mui :%.2f", pointHeightNoseAndHeightFace);
     
+    //khoang cach giua 2 canh mui = rong mat
     
-
+    double pointWidthNoseAndWidthLeftEyes = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeLeftCornerX andPos:faceAnalyst.leftEyeRightCornerX andPos:faceAnalyst.noseLeftX andPos:faceAnalyst.noseRightX andConstant:1.0];
+    NSLog(@"Khoang cach giua hai canh mui va rong mat trai :%.2f", pointWidthNoseAndWidthLeftEyes);
+    
+    double pointWidthNoseAndWidthRightEyes = [TestFunction convertPointWithPosition:faceAnalyst.rightEyeLeftCornerX andPos:faceAnalyst.rightEyeRightCornerX andPos:faceAnalyst.noseLeftX andPos:faceAnalyst.noseRightX andConstant:1.0];
+    NSLog(@"Khoang cach giua hai canh mui va rong mat phai :%.2f", pointWidthNoseAndWidthRightEyes);
+    
+    //Khoảng cách từ đường thẳng nối 2 điểm cuối của cánh mũi tới điểm cuối của môi trên
+    //và khoảng cách từ điểm cuối của môi trên đến điểm cuối của cằm theo tỉ lệ 0.6 -1.0
+    double pointNoseAndChin = [TestFunction convertPointWithPosition:faceAnalyst.noseLeftY andPos:faceAnalyst.mouthLowerLipTopY andPos:faceAnalyst.mouthLowerLipTopY andPos:faceAnalyst.contourChinY andConstant:1.6];
+    NSLog(@"Khoang cach giua hai diem cuoi canh mui toi diem cuoi moi tren :%.2f", pointNoseAndChin);
+    
+    //Khoảng cách từ đường thẳng nối giữa 2 điểm trong của 2 tròng đen mắt
+    //bằng khoảng cách giữa 2 điểm cuối cùng của khóe miệng.
+    double point2EyesAndWidthMounth = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeUpperRightQuarterX andPos:faceAnalyst.rightEyeUpperLeftQuarterX andPos:faceAnalyst.mouthRightCornerX andPos:faceAnalyst.mouthLeftCornerX andConstant:1.0];
+    NSLog(@"Khoảng cách từ đường thẳng nối giữa 2 điểm trong của 2 tròng đen mắt va khoang cach cua khoe mieng :%.2f", point2EyesAndWidthMounth);
+    
+    //Khoảng cách từ đường thẳng nối điểm giữa của 2 tròng đen mắt đến điểm chính giữa mũi
+    //bằng khoảng cánh từ đường thẳng nối 2 điểm cuối của cánh mũi đến điểm cuối của môi trên.
+    
+    //double pointLeftEyesAndHeightNoseAndUpperLip = [TestFunction convertPointWithPosition:faceAnalyst.leftEyeRightCornerY andPos:faceAnalyst.noseLeftY andPos:faceAnalyst.noseLeftY andPos:faceAnalyst.mouthUpperLipBottomY andConstant:1.0];
+    //  NSLog(@"Khoảng cách từ đường thẳng nối điểm giữa của tròng đen mắt trai đến điểm chính giữa mũi va khoang cach tu duong thang noi 2 diem cuoi cua canh mui den diem cuoi cua moi tren :%.2f", pointLeftEyesAndHeightNoseAndUpperLip);
+    
+    //    double pointRightEyesAndHeightNoseAndUpperLip = [TestFunction convertPointWithPosition:faceAnalyst.rightEyeLeftCornerY andPos:faceAnalyst.noseRightY andPos:faceAnalyst.noseRightY andPos:faceAnalyst.mouthUpperLipBottomY andConstant:1.0];
+    //    NSLog(@"Khoảng cách từ đường thẳng nối điểm giữa của tròng đen mắt phai đến điểm chính giữa mũi va khoang cach tu duong thang noi 2 diem cuoi cua canh mui den diem cuoi cua moi tren :%.2f", pointRightEyesAndHeightNoseAndUpperLip);
+    //
+    //Khoảng cách đường thẳng nối 2 đỉnh chân mày tới đường thẳng nối điểm giữa của hai tròng đen mắt
+    //bằng khoảng cách từ đường nối 2 điểm cuối của cánh mũi đến điểm cuối của đỉnh môi trên
+    double pointLeftEyeBrowAndHeightNoseAndUpperLip = [TestFunction convertPointWithPosition:faceAnalyst.leftEyebrowUpperMiddleY andPos:faceAnalyst.leftEyeCenterY andPos:faceAnalyst.noseLeftY andPos:faceAnalyst.mouthUpperLipTopY andConstant:1.0];
+    NSLog(@"Khoảng cách từ đường thẳng nối điểm giữa của tròng đen mắt trai đến điểm chính giữa mũi va khoang cach tu duong thang noi 2 diem cuoi cua canh mui den diem cuoi cua moi tren :%.2f", pointLeftEyeBrowAndHeightNoseAndUpperLip);
+    
+    double pointRightEyeBrowAndHeightNoseAndUpperLip = [TestFunction convertPointWithPosition:faceAnalyst.rightEyebrowUpperMiddleY andPos:faceAnalyst.rightEyeCenterY andPos:faceAnalyst.noseRightY andPos:faceAnalyst.mouthUpperLipTopY andConstant:1.0];
+    NSLog(@"Khoảng cách từ đường thẳng nối điểm giữa của tròng đen mắt phai đến điểm chính giữa mũi va khoang cach tu duong thang noi 2 diem cuoi cua canh mui den diem cuoi cua moi tren :%.2f", pointRightEyeBrowAndHeightNoseAndUpperLip);
+    
+    
+    double result = (pointLeftEye + pointRighEye + pointWidthEyeAndWidthFace + pointWidthLeftEyeAndWidthLeftAndRightEye +
+                     pointWidthRightEyeAndWidthLeftAndRightEye + pointHeightNoseAndHeightFace + pointWidthNoseAndWidthLeftEyes + pointWidthNoseAndWidthRightEyes + pointNoseAndChin + point2EyesAndWidthMounth + pointLeftEyeBrowAndHeightNoseAndUpperLip + pointRightEyeBrowAndHeightNoseAndUpperLip + point) / 13.0;
+    
+    NSLog(@"Diem trung binh cua khuon mat :%.2f", result);
+    return result;
 }
 
 #pragma mark - TGCameraDelegate required
